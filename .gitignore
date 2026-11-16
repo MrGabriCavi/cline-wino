@@ -1,0 +1,73 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM64/
+*.pdb
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code / Rider
+.vscode/
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# MSIX packaging
+AppPackages/
+BundleArtifacts/
+*.appx
+*.appxbundle
+*.appxupload
+*.msix
+*.msixbundle
+*.msixupload
+Package.StoreAssociation.xml
+
+# Certificates / signing keys
+*.pfx
+*.cer
+*.pem
+*.key
+*.p12
+
+# Secrets and local environment (API keys live in Windows Credential Manager, never in files)
+.env
+.env.*
+secrets.json
+*.secrets.json
+
+# App data copied out of the package folder (chat sessions may contain private content)
+sessions/
+schedules.json
+
+# Crash dumps written by the app
+clinewin-crash.txt
+
+# Publish output (profiles in Properties/PublishProfiles are kept)
+publish/
+*.pubxml.user
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

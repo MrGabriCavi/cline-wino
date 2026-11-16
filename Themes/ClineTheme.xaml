@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Colori di Cline Desktop (tema scuro), convertiti da OKLCH a sRGB.
+    Origine: cline/sdk/packages/ui/theme/palette.css e tokens.css (blocco .dark).
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Palette neutra (neutral-1 … neutral-12)  -->
+    <Color x:Key="ClineNeutral1">#111116</Color>
+    <Color x:Key="ClineNeutral2">#1A1A1F</Color>
+    <Color x:Key="ClineNeutral3">#212127</Color>
+    <Color x:Key="ClineNeutral4">#282830</Color>
+    <Color x:Key="ClineNeutral5">#32323A</Color>
+    <Color x:Key="ClineNeutral6">#3F3F48</Color>
+    <Color x:Key="ClineNeutral8">#5F5F69</Color>
+    <Color x:Key="ClineNeutral9">#73737D</Color>
+    <Color x:Key="ClineNeutral10">#94949E</Color>
+    <Color x:Key="ClineNeutral11">#C0C0C7</Color>
+    <Color x:Key="ClineNeutral12">#FCFCFC</Color>
+
+    <!--  Overlay trasparenti (neutral-a2 … a5)  -->
+    <Color x:Key="ClineNeutralA2">#0AF7F7FC</Color>
+    <Color x:Key="ClineNeutralA3">#13E8E8FA</Color>
+    <Color x:Key="ClineNeutralA4">#1DDBDBFB</Color>
+    <Color x:Key="ClineNeutralA5">#28E3E3FC</Color>
+
+    <!--  Accento viola (accent-n)  -->
+    <Color x:Key="ClineAccent3">#1D185F</Color>
+    <Color x:Key="ClineAccent7">#5754DB</Color>
+    <Color x:Key="ClineAccent8">#6C6EF7</Color>
+    <Color x:Key="ClineAccent9">#7E85FF</Color>
+    <Color x:Key="ClineAccent11">#B8BDFF</Color>
+    <!--  primary in dark = mix(accent-8 60%, accent-7)  -->
+    <Color x:Key="ClinePrimary">#6464EC</Color>
+    <Color x:Key="ClineError">#DB3931</Color>
+
+    <!--  Colore del robot nella schermata di benvenuto (welcome-hero-color)  -->
+    <Color x:Key="ClineHero">#838BF9</Color>
+
+    <!--  Ruoli semantici  -->
+    <SolidColorBrush x:Key="ClineBackgroundBrush" Color="{StaticResource ClineNeutral1}" />
+    <SolidColorBrush x:Key="ClineSidebarBrush" Color="{StaticResource ClineNeutral2}" />
+    <SolidColorBrush x:Key="ClineCardBrush" Color="{StaticResource ClineNeutral2}" />
+    <SolidColorBrush x:Key="ClineSurface3Brush" Color="{StaticResource ClineNeutral3}" />
+    <SolidColorBrush x:Key="ClineBorderBrush" Color="{StaticResource ClineNeutral4}" />
+    <SolidColorBrush x:Key="ClineInputBorderBrush" Color="{StaticResource ClineNeutral5}" />
+    <SolidColorBrush x:Key="ClineText1Brush" Color="{StaticResource ClineNeutral12}" />
+    <SolidColorBrush x:Key="ClineText2Brush" Color="{StaticResource ClineNeutral11}" />
+    <SolidColorBrush x:Key="ClineTextMutedBrush" Color="{StaticResource ClineNeutral10}" />
+    <SolidColorBrush x:Key="ClineTextDisabledBrush" Color="{StaticResource ClineNeutral9}" />
+    <SolidColorBrush x:Key="ClineHoverBrush" Color="{StaticResource ClineNeutralA3}" />
+    <SolidColorBrush x:Key="ClineSelectedBrush" Color="{StaticResource ClineNeutralA4}" />
+    <SolidColorBrush x:Key="ClinePrimaryBrush" Color="{StaticResource ClinePrimary}" />
+    <SolidColorBrush x:Key="ClineHeroFillBrush" Opacity="0.13" Color="{StaticResource ClineHero}" />
+    <SolidColorBrush x:Key="ClineHeroStrokeBrush" Opacity="0.12" Color="{StaticResource ClineHero}" />
+    <SolidColorBrush x:Key="ClineHeroInnerBrush" Opacity="0.02" Color="{StaticResource ClineHero}" />
+
+    <!--  Raggi (radius = 0.5rem)  -->
+    <CornerRadius x:Key="ClineRadiusSm">4</CornerRadius>
+    <CornerRadius x:Key="ClineRadiusMd">6</CornerRadius>
+    <CornerRadius x:Key="ClineRadiusLg">8</CornerRadius>
+    <CornerRadius x:Key="ClineRadiusXl">12</CornerRadius>
+
+
+    <!--  Pulsante "fantasma" della barra laterale (solo icona)  -->
+    <Style x:Key="ClineIconButtonStyle" BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource ClineRadiusMd}" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText2Brush}" />
+    </Style>
+
+    <!--  Pulsante con bordo della riga sopra il composer ("py-photo-manager", "main", "Terminale")  -->
+    <Style x:Key="ClineChipButtonStyle" BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource ClineRadiusMd}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!--  Menu a tendina senza bordo del composer (provider, modello)  -->
+    <Style x:Key="ClineGhostDropDownStyle" TargetType="DropDownButton">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource ClineRadiusMd}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!--  Voce della barra laterale (navigazione e impostazioni)  -->
+    <Style x:Key="ClineSidebarItemStyle" BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+        <Setter Property="MinHeight" Value="34" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="Margin" Value="0,1" />
+        <Setter Property="CornerRadius" Value="6" />
+    </Style>
+
+    <!--  Testi delle pagine impostazioni  -->
+    <Style x:Key="ClinePageTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText1Brush}" />
+    </Style>
+    <Style x:Key="ClinePageDescriptionStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="LineHeight" Value="22" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText2Brush}" />
+    </Style>
+    <Style x:Key="ClineSettingTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText1Brush}" />
+    </Style>
+    <Style x:Key="ClineSettingDescriptionStyle" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0,4,0,0" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText2Brush}" />
+    </Style>
+
+    <!--  Riga di impostazione con separatore in alto: testo a sinistra, controllo a destra  -->
+    <Style x:Key="SettingRowStyle" TargetType="Grid">
+        <Setter Property="Padding" Value="0,18" />
+        <Setter Property="ColumnSpacing" Value="24" />
+        <Setter Property="BorderBrush" Value="{StaticResource ClineBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0,1,0,0" />
+    </Style>
+
+    <!--  Scheda con bordo (elenchi, stati vuoti)  -->
+    <Style x:Key="ClineCardStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource ClineBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource ClineRadiusLg}" />
+    </Style>
+
+    <!--  Contenitore standard delle pagine impostazioni  -->
+    <Style x:Key="SettingsPageStackStyle" TargetType="StackPanel">
+        <Setter Property="MaxWidth" Value="1105" />
+        <Setter Property="Padding" Value="68,36,68,48" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!--  Titolo di sezione interno a una pagina  -->
+    <Style x:Key="ClineSectionTitleStyle" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0,32,0,12" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText1Brush}" />
+    </Style>
+
+    <!--  Intestazione di colonna (maiuscolo piccolo)  -->
+    <Style x:Key="ClineColumnHeaderStyle" TargetType="TextBlock">
+        <Setter Property="CharacterSpacing" Value="40" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText2Brush}" />
+    </Style>
+
+    <!--  Interruttore senza etichetta (tabella notifiche, righe impostazioni)  -->
+    <Style x:Key="ClineBareToggleStyle" TargetType="ToggleSwitch">
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="OnContent" Value="" />
+        <Setter Property="OffContent" Value="" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Margin" Value="0,0,-8,0" />
+    </Style>
+
+    <!--  Colori di stato  -->
+    <SolidColorBrush x:Key="ClineSuccessBrush" Color="#3DD68C" />
+    <SolidColorBrush x:Key="ClineErrorTextBrush" Color="#FF6D60" />
+    <SolidColorBrush x:Key="ClinePrimarySoftBrush" Opacity="0.15" Color="{StaticResource ClinePrimary}" />
+
+    <Style x:Key="ClineCaptionTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource ClineText2Brush}" />
+    </Style>
+
+    <!--
+        Sostituzioni delle risorse di sistema WinUI nel tema scuro, così i controlli
+        nativi (pulsanti, menu, caselle di testo) prendono i colori di Cline.
+    -->
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+            <Color x:Key="SystemAccentColor">#6464EC</Color>
+            <Color x:Key="SystemAccentColorLight1">#6C6EF7</Color>
+            <Color x:Key="SystemAccentColorLight2">#7E85FF</Color>
+            <Color x:Key="SystemAccentColorLight3">#989FFF</Color>
+            <Color x:Key="SystemAccentColorDark1">#5754DB</Color>
+            <Color x:Key="SystemAccentColorDark2">#443AC0</Color>
+            <Color x:Key="SystemAccentColorDark3">#362F9C</Color>
+
+            <SolidColorBrush x:Key="SolidBackgroundFillColorBaseBrush" Color="#111116" />
+            <SolidColorBrush x:Key="MenuBarBackground" Color="#111116" />
+            <SolidColorBrush x:Key="MenuBarItemBackgroundPointerOver" Color="#13E8E8FA" />
+            <SolidColorBrush x:Key="MenuBarItemBackgroundPressed" Color="#1DDBDBFB" />
+            <SolidColorBrush x:Key="MenuBarItemBackgroundSelected" Color="#1DDBDBFB" />
+            <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="#1A1A1F" />
+            <SolidColorBrush x:Key="MenuFlyoutPresenterBorderBrush" Color="#282830" />
+
+            <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#13E8E8FA" />
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#1DDBDBFB" />
+            <SolidColorBrush x:Key="ButtonBorderBrush" Color="#282830" />
+            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#32323A" />
+            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#32323A" />
+            <SolidColorBrush x:Key="ButtonForeground" Color="#FCFCFC" />
+            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent" />
+            <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent" />
+            <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#5F5F69" />
+
+            <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#94949E" />
+            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#94949E" />
+            <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="#73737D" />
+
+            <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="#13E8E8FA" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="#1DDBDBFB" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="#28E3E3FC" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="#1DDBDBFB" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="#28E3E3FC" />
+
+            <SolidColorBrush x:Key="ToolTipBackground" Color="#212127" />
+            <SolidColorBrush x:Key="ToolTipBorderBrush" Color="#32323A" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

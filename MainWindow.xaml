@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="ClineWin.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ClineWin"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Cline"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ClineBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  Barra del titolo (con i pulsanti riduci / ingrandisci / chiudi di Windows)  -->
+        <TitleBar x:Name="AppTitleBar" Title="Cline">
+            <TitleBar.IconSource>
+                <ImageIconSource ImageSource="Assets/AppIcon.ico" />
+            </TitleBar.IconSource>
+        </TitleBar>
+
+        <!--  Barra dei menu classica di Windows  -->
+        <MenuBar
+            Grid.Row="1"
+            BorderBrush="{StaticResource ClineBorderBrush}"
+            BorderThickness="0,0,0,1">
+            <MenuBarItem Title="File">
+                <MenuFlyoutItem Click="NewSession_Click" Text="Nuova sessione">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE710;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="N" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Click="OpenProject_Click" Text="Apri progetto...">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8B7;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="O" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Click="Settings_Click" Text="Impostazioni">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Click="Exit_Click" Text="Esci">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Q" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem Title="Modifica">
+                <MenuFlyoutItem Text="Annulla">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE7A7;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Z" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Ripeti">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE7A6;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Y" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Taglia">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8C6;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="X" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Copia">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8C8;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="C" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Incolla">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE77F;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="V" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Seleziona tutto">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="A" Modifiers="Control" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem Title="Visualizza">
+                <ToggleMenuFlyoutItem
+                    x:Name="ToggleSidebarItem"
+                    Click="ToggleSidebar_Click"
+                    IsChecked="True"
+                    Text="Barra laterale">
+                    <ToggleMenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="B" Modifiers="Control" />
+                    </ToggleMenuFlyoutItem.KeyboardAccelerators>
+                </ToggleMenuFlyoutItem>
+                <MenuFlyoutItem KeyboardAcceleratorTextOverride="Ctrl+ò" Text="Terminale">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE756;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Cronologia sessioni">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE81C;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem Title="Sessione">
+                <MenuFlyoutItem Click="NewSession_Click" Text="Nuova sessione">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE710;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem IsEnabled="False" Text="Interrompi">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE71A;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Click="Schedule_Click" Text="Pianificazioni">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE823;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem Title="Aiuto">
+                <MenuFlyoutItem Click="Docs_Click" Text="Documentazione">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE897;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Click="About_Click" Text="Informazioni su Cline" />
+            </MenuBarItem>
+        </MenuBar>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="SidebarColumn" Width="260" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Barra laterale  -->
+            <Grid
+                x:Name="Sidebar"
+                Background="{StaticResource ClineSidebarBrush}"
+                BorderBrush="{StaticResource ClineBorderBrush}"
+                BorderThickness="0,0,1,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--  Indietro / avanti  -->
+                <StackPanel
+                    Margin="0,6,8,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Spacing="2">
+                    <Button
+                        x:Name="BackButton"
+                        Click="Back_Click"
+                        IsEnabled="False"
+                        Style="{StaticResource ClineIconButtonStyle}"
+                        ToolTipService.ToolTip="Indietro">
+                        <FontIcon FontSize="14" Glyph="&#xE72B;" />
+                    </Button>
+                    <Button
+                        x:Name="ForwardButton"
+                        Click="Forward_Click"
+                        IsEnabled="False"
+                        Style="{StaticResource ClineIconButtonStyle}"
+                        ToolTipService.ToolTip="Avanti">
+                        <FontIcon FontSize="14" Glyph="&#xE72A;" />
+                    </Button>
+                </StackPanel>
+
+                <!--  Logo + cerca  -->
+                <Grid Grid.Row="1" Margin="14,12,8,8">
+                    <local:ClineLogo
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        Foreground="{StaticResource ClineText1Brush}" />
+                    <Button
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource ClineIconButtonStyle}"
+                        ToolTipService.ToolTip="Cerca sessioni">
+                        <FontIcon FontSize="14" Glyph="&#xE721;" />
+                    </Button>
+                </Grid>
+
+                <!--  Navigazione principale  -->
+                <ListView
+                    x:Name="NavList"
+                    Grid.Row="2"
+                    Padding="8,0"
+                    IsItemClickEnabled="True"
+                    ItemClick="NavList_ItemClick"
+                    ItemContainerStyle="{StaticResource ClineSidebarItemStyle}"
+                    SelectionMode="Single">
+                    <ListViewItem AutomationProperties.Name="Sessione" Tag="session">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon FontSize="14" Glyph="&#xE710;" />
+                            <TextBlock FontSize="13" FontWeight="SemiBold" Text="Sessione" />
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem AutomationProperties.Name="Pianificazione" Tag="schedule">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon FontSize="14" Glyph="&#xE823;" />
+                            <TextBlock FontSize="13" Text="Pianificazione" />
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem AutomationProperties.Name="Personalizza" Tag="customize">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon FontSize="14" Glyph="&#xEA86;" />
+                            <TextBlock FontSize="13" Text="Personalizza" />
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+
+                <!--  Sezione Impostazioni (sostituisce l'elenco sessioni quando si è nelle impostazioni)  -->
+                <Grid
+                    x:Name="SettingsSection"
+                    Grid.Row="3"
+                    Grid.RowSpan="2"
+                    Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Margin="18,22,8,6"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Foreground="{StaticResource ClineText2Brush}"
+                        Text="Impostazioni" />
+                    <ListView
+                        x:Name="SettingsNav"
+                        Grid.Row="1"
+                        Padding="8,0"
+                        IsItemClickEnabled="True"
+                        ItemClick="NavList_ItemClick"
+                        ItemContainerStyle="{StaticResource ClineSidebarItemStyle}"
+                        SelectionMode="Single">
+                        <ListViewItem AutomationProperties.Name="Generali" Tag="settings/general">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE9E9;" />
+                                <TextBlock FontSize="13" Text="Generali" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Provider" x:Name="ProviderGroupItem" Tag="settings/account">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE703;" />
+                                <TextBlock FontSize="13" Text="Provider" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Account Cline"
+                            x:Name="AccountItem"
+                            Padding="38,0,8,0"
+                            Tag="settings/account"
+                            Visibility="Collapsed">
+                            <TextBlock FontSize="13" Text="Account Cline" />
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Locale"
+                            x:Name="LocalItem"
+                            Padding="38,0,8,0"
+                            Tag="settings/local"
+                            Visibility="Collapsed">
+                            <TextBlock FontSize="13" Text="Locale" />
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="BYOK"
+                            x:Name="ByokItem"
+                            Padding="38,0,8,0"
+                            Tag="settings/byok"
+                            Visibility="Collapsed">
+                            <TextBlock FontSize="13" Text="BYOK" />
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Voce" Tag="settings/voice">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE720;" />
+                                <TextBlock FontSize="13" Text="Voce" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Scorciatoie" Tag="settings/keybindings">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE765;" />
+                                <TextBlock FontSize="13" Text="Scorciatoie" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Importa" Tag="settings/import">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE8B5;" />
+                                <TextBlock FontSize="13" Text="Importa" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Remoto" Tag="settings/remote">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE968;" />
+                                <TextBlock FontSize="13" Text="Remoto" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Debug" Tag="settings/debug">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xEBE8;" />
+                                <TextBlock FontSize="13" Text="Debug" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem AutomationProperties.Name="Informazioni" Tag="settings/about">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon FontSize="14" Glyph="&#xE946;" />
+                                <TextBlock FontSize="13" Text="Informazioni" />
+                            </StackPanel>
+                        </ListViewItem>
+                    </ListView>
+                </Grid>
+
+                <!--  Intestazione "Sessioni"  -->
+                <Grid
+                    x:Name="SessionsHeader"
+                    Grid.Row="3"
+                    Margin="16,22,8,4">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        Foreground="{StaticResource ClineText2Brush}"
+                        Text="Sessioni" />
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="2">
+                        <Button Style="{StaticResource ClineIconButtonStyle}" ToolTipService.ToolTip="Raggruppa per progetto">
+                            <FontIcon FontSize="13" Glyph="&#xF168;" />
+                        </Button>
+                        <Button Style="{StaticResource ClineIconButtonStyle}" ToolTipService.ToolTip="Filtra">
+                            <FontIcon FontSize="13" Glyph="&#xE71C;" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <!--  Elenco sessioni salvate  -->
+                <Grid x:Name="SessionsBody" Grid.Row="4">
+                    <ListView
+                        x:Name="SessionList"
+                        Padding="8,0"
+                        IsItemClickEnabled="True"
+                        ItemClick="SessionList_ItemClick"
+                        SelectionChanged="SessionList_SelectionChanged"
+                        SelectionMode="Single"
+                        SingleSelectionFollowsFocus="False">
+                        <ListView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource ClineSidebarItemStyle}" TargetType="ListViewItem" />
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:SessionSummary">
+                                <Grid
+                                    AutomationProperties.Name="{x:Bind Title}"
+                                    Background="Transparent"
+                                    ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem
+                                                Click="DeleteSession_Click"
+                                                Tag="{x:Bind Id}"
+                                                Text="Elimina sessione">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE74D;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </Grid.ContextFlyout>
+                                    <TextBlock
+                                        FontSize="13"
+                                        Text="{x:Bind Title}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTipService.ToolTip="{x:Bind Title}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        FontSize="12"
+                                        Foreground="{StaticResource ClineTextMutedBrush}"
+                                        Text="{x:Bind When}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock
+                        x:Name="NoSessionsText"
+                        Margin="16,8,16,0"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ClineCaptionTextStyle}"
+                        Text="Nessuna sessione nella cronologia."
+                        TextWrapping="Wrap" />
+                </Grid>
+
+                <!--  Impostazioni in fondo  -->
+                <Border
+                    Grid.Row="5"
+                    Padding="8"
+                    BorderBrush="{StaticResource ClineBorderBrush}"
+                    BorderThickness="0,1,0,0">
+                    <Button
+                        x:Name="SettingsButton"
+                        AutomationProperties.Name="Impostazioni"
+                        Height="36"
+                        Padding="8,0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        BorderThickness="0"
+                        Click="Settings_Click"
+                        CornerRadius="6">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon
+                                FontSize="14"
+                                Foreground="{StaticResource ClineText2Brush}"
+                                Glyph="&#xE713;" />
+                            <TextBlock FontSize="13" Text="Impostazioni" />
+                        </StackPanel>
+                    </Button>
+                </Border>
+            </Grid>
+
+            <!--  Contenuto  -->
+            <Frame
+                x:Name="RootFrame"
+                Grid.Column="1"
+                Navigated="RootFrame_Navigated" />
+        </Grid>
+    </Grid>
+</Window>

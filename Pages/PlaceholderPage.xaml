@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClineWin.PlaceholderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{StaticResource ClineBackgroundBrush}">
+    <StackPanel Padding="40,32" Spacing="8">
+        <TextBlock
+            x:Name="TitleText"
+            FontSize="24"
+            FontWeight="SemiBold" />
+        <TextBlock Style="{StaticResource ClineCaptionTextStyle}" Text="Questa sezione non è ancora disponibile." />
+    </StackPanel>
+</Page>

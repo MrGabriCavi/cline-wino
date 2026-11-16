@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClineWin.ImportPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{StaticResource ClineBackgroundBrush}">
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="856" Style="{StaticResource SettingsPageStackStyle}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource ClinePageTitleStyle}" Text="Importa" />
+                    <TextBlock
+                        Margin="0,12,0,0"
+                        Style="{StaticResource ClinePageDescriptionStyle}"
+                        Text="Porta in Cline la cronologia delle conversazioni di altri strumenti di coding. Le sessioni importate compaiono nella cronologia e si possono continuare qui." />
+                </StackPanel>
+                <Button
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    IsEnabled="False"
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.ToolTip="L'importazione arriverà con il collegamento al backend">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="13" Glyph="&#xE8B5;" />
+                        <TextBlock Text="Importa sessioni" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <StackPanel
+                x:Name="SourceRows"
+                MaxWidth="672"
+                Margin="0,28,0,0"
+                HorizontalAlignment="Stretch" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

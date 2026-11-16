@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClineWin.KeybindingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{StaticResource ClineBackgroundBrush}">
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="856" Style="{StaticResource SettingsPageStackStyle}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <FontIcon FontSize="24" Glyph="&#xE765;" />
+                        <TextBlock Style="{StaticResource ClinePageTitleStyle}" Text="Scorciatoie da tastiera" />
+                    </StackPanel>
+                    <TextBlock
+                        Margin="0,12,0,0"
+                        Style="{StaticResource ClinePageDescriptionStyle}"
+                        Text="Fai clic su una scorciatoia per registrarne una nuova." />
+                </StackPanel>
+                <Button
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    Click="Reset_Click"
+                    Content="Ripristina predefinite"
+                    Style="{StaticResource ClineChipButtonStyle}" />
+            </Grid>
+
+            <Border Margin="0,28,0,0" Style="{StaticResource ClineCardStyle}">
+                <StackPanel x:Name="BindingRows" />
+            </Border>
+
+            <TextBlock
+                Margin="0,12,0,0"
+                FontSize="12"
+                Foreground="{StaticResource ClineTextMutedBrush}"
+                Text="Fai clic, poi premi una scorciatoia con Ctrl o Alt, oppure F1–F24. Esc annulla, Backspace rimuove la scorciatoia."
+                TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

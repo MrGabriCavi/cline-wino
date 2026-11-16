@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClineWin.SchedulePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{StaticResource ClineBackgroundBrush}">
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="1105" Style="{StaticResource SettingsPageStackStyle}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource ClinePageTitleStyle}" Text="Pianificazione" />
+                    <TextBlock
+                        Margin="0,12,0,0"
+                        Style="{StaticResource ClinePageDescriptionStyle}"
+                        Text="Fai lavorare l'agente a orari stabiliti, per automazioni ricorrenti come rapporti giornalieri o revisioni del codice. Ogni esecuzione diventa una sessione nella cronologia." />
+                </StackPanel>
+                <Button
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    AutomationProperties.Name="Nuova attività"
+                    Click="NewTask_Click"
+                    Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="13" Glyph="&#xE710;" />
+                        <TextBlock Text="Nuova attività" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <InfoBar
+                Margin="0,20,0,0"
+                IsClosable="False"
+                IsOpen="True"
+                Severity="Informational"
+                Message="Le attività partono solo mentre ClineWin è aperto; quelle saltate partono una volta al riavvio. Senza nessuno ad approvare, l'agente esegue solo le azioni consentite dall'approvazione automatica." />
+
+            <TextBlock
+                x:Name="TasksHeader"
+                Margin="0,28,0,10"
+                Style="{StaticResource ClineSectionTitleStyle}"
+                Text="Attività" />
+            <StackPanel x:Name="TaskRows" Spacing="10" />
+            <TextBlock
+                x:Name="EmptyText"
+                Style="{StaticResource ClineCaptionTextStyle}"
+                Text="Nessuna attività pianificata. Creane una o parti da un modello qui sotto." />
+
+            <TextBlock
+                Margin="0,32,0,10"
+                Style="{StaticResource ClineSectionTitleStyle}"
+                Text="Modelli" />
+            <Grid x:Name="TemplateGrid" ColumnSpacing="12" RowSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

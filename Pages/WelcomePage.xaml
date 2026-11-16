@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClineWin.WelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClineWin"
+    Background="{StaticResource ClineBackgroundBrush}"
+    NavigationCacheMode="Required"
+    PointerMoved="Page_PointerMoved">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Pannello git: modifiche del progetto, diff, stage, commit  -->
+        <Border
+            x:Name="GitPanel"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Width="420"
+            Background="{StaticResource ClineSidebarBrush}"
+            BorderBrush="{StaticResource ClineBorderBrush}"
+            BorderThickness="1,0,0,0"
+            Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Padding="16,12,8,12" ColumnSpacing="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="2">
+                        <TextBlock
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            Text="Modifiche" />
+                        <TextBlock
+                            x:Name="GitBranchText"
+                            FontSize="12"
+                            Foreground="{StaticResource ClineText2Brush}"
+                            TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <Button
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        AutomationProperties.Name="Aggiorna modifiche"
+                        Click="GitRefresh_Click"
+                        Style="{StaticResource ClineIconButtonStyle}"
+                        ToolTipService.ToolTip="Aggiorna">
+                        <FontIcon FontSize="12" Glyph="&#xE72C;" />
+                    </Button>
+                    <Button
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        AutomationProperties.Name="Chiudi pannello modifiche"
+                        Click="GitClose_Click"
+                        Style="{StaticResource ClineIconButtonStyle}"
+                        ToolTipService.ToolTip="Chiudi">
+                        <FontIcon FontSize="12" Glyph="&#xE711;" />
+                    </Button>
+                </Grid>
+
+                <ScrollViewer Grid.Row="1" Padding="8,0,8,8">
+                    <StackPanel x:Name="GitContent" Spacing="4" />
+                </ScrollViewer>
+
+                <!--  Commit delle modifiche preparate  -->
+                <Border
+                    Grid.Row="2"
+                    Padding="12"
+                    BorderBrush="{StaticResource ClineBorderBrush}"
+                    BorderThickness="0,1,0,0">
+                    <StackPanel Spacing="8">
+                        <TextBox
+                            x:Name="CommitMessageBox"
+                            AcceptsReturn="True"
+                            AutomationProperties.Name="Messaggio di commit"
+                            MaxHeight="120"
+                            PlaceholderText="Messaggio di commit"
+                            TextChanged="CommitMessage_TextChanged"
+                            TextWrapping="Wrap" />
+                        <Button
+                            x:Name="CommitButton"
+                            HorizontalAlignment="Stretch"
+                            AutomationProperties.Name="Commit"
+                            Click="Commit_Click"
+                            Content="Commit delle modifiche preparate"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <InfoBar
+            x:Name="ChatBar"
+            Grid.RowSpan="2"
+            MaxWidth="856"
+            Margin="16"
+            VerticalAlignment="Top"
+            Canvas.ZIndex="1"
+            IsOpen="False" />
+
+        <!--  Conversazione: compare dal primo messaggio  -->
+        <ScrollViewer
+            x:Name="ConversationScroll"
+            HorizontalScrollBarVisibility="Disabled"
+            HorizontalScrollMode="Disabled"
+            SizeChanged="ConversationScroll_SizeChanged"
+            Visibility="Collapsed">
+            <StackPanel
+                x:Name="MessagesPanel"
+                Margin="0,24,0,8"
+                HorizontalAlignment="Center"
+                Spacing="20" />
+        </ScrollViewer>
+
+        <StackPanel
+            x:Name="ComposerArea"
+            Grid.RowSpan="2"
+            MaxWidth="856"
+            Margin="24,0"
+            VerticalAlignment="Center">
+
+            <!--
+                Robot della schermata di benvenuto (da @cline/ui agent-welcome-hero).
+                Gli occhi seguono il puntatore come nell'app originale.
+            -->
+            <Canvas
+                x:Name="Hero"
+                Width="204"
+                Height="192"
+                Margin="0,0,0,56"
+                HorizontalAlignment="Center">
+                <Path
+                    Fill="{StaticResource ClineHeroFillBrush}"
+                    Stroke="{StaticResource ClineHeroStrokeBrush}"
+                    StrokeThickness="1"
+                    Data="M118.894 28.2461C118.894 19.3941 111.59 12.1251 102.222 12.125C92.8539 12.125 85.5499 19.394 85.5499 28.2461C85.5499 30.3758 85.9304 33.1689 86.7003 36.542L88.3927 43.9531H49.1749C40.8046 43.9531 34.0189 50.7388 34.0187 59.1094V87.875L13.2052 112.156L34.0187 136.437V165.203C34.0187 173.574 40.8044 180.359 49.1749 180.359H155.269C163.639 180.359 170.425 173.574 170.425 165.203V136.437L191.236 112.156L170.425 87.875V59.1094C170.425 50.739 163.639 43.9533 155.269 43.9531H116.051L117.742 36.542C118.512 33.1689 118.894 30.3758 118.894 28.2461ZM131.012 28.8877C130.992 29.8428 130.928 30.8253 130.827 31.8281H155.269C170.336 31.8283 182.55 44.0428 182.55 59.1094V83.3906L202.345 106.485C205.141 109.749 205.142 114.564 202.345 117.828L182.55 140.921V165.203C182.55 180.27 170.336 192.484 155.269 192.484H49.1749C34.1079 192.484 21.8937 180.27 21.8937 165.203V140.923L2.09777 117.828C-0.699604 114.564 -0.69891 109.749 2.09777 106.485L21.8937 83.3896V59.1094C21.8939 44.0427 34.1079 31.8281 49.1749 31.8281H73.6163C73.5159 30.8253 73.4516 29.8428 73.4318 28.8877L73.4249 28.2461C73.4249 12.3814 86.478 0 102.222 0C117.965 0.00014284 131.019 12.3814 131.019 28.2461L131.012 28.8877Z" />
+                <Border
+                    x:Name="LeftEye"
+                    Canvas.Left="63"
+                    Canvas.Top="83"
+                    Width="18"
+                    Height="52"
+                    Background="{StaticResource ClineHeroFillBrush}"
+                    BorderBrush="{StaticResource ClineHeroStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="9">
+                    <Border.RenderTransform>
+                        <TranslateTransform x:Name="LeftEyeTransform" />
+                    </Border.RenderTransform>
+                </Border>
+                <Border
+                    x:Name="RightEye"
+                    Canvas.Left="119.5"
+                    Canvas.Top="83"
+                    Width="18"
+                    Height="52"
+                    Background="{StaticResource ClineHeroFillBrush}"
+                    BorderBrush="{StaticResource ClineHeroStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="9">
+                    <Border.RenderTransform>
+                        <TranslateTransform x:Name="RightEyeTransform" />
+                    </Border.RenderTransform>
+                </Border>
+            </Canvas>
+
+            <!--  Riga sopra il composer: ambiente, progetto, branch, worktree, terminale  -->
+            <Grid
+                x:Name="ChipsRow"
+                Margin="0,0,0,16"
+                ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Width="34"
+                    Padding="0"
+                    Style="{StaticResource ClineChipButtonStyle}"
+                    ToolTipService.ToolTip="Ambiente: questo computer">
+                    <FontIcon FontSize="14" Glyph="&#xE7F8;" />
+                    <Button.Flyout>
+                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                            <ToggleMenuFlyoutItem IsChecked="True" Text="Locale">
+                                <ToggleMenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE7F8;" />
+                                </ToggleMenuFlyoutItem.Icon>
+                            </ToggleMenuFlyoutItem>
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem IsEnabled="False" Text="Aggiungi host SSH...">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE968;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button
+                    Grid.Column="1"
+                    Click="PickProject_Click"
+                    Style="{StaticResource ClineChipButtonStyle}"
+                    ToolTipService.ToolTip="Scegli il progetto">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE8B7;" />
+                        <TextBlock
+                            x:Name="ProjectText"
+                            MaxWidth="220"
+                            Text="Scegli progetto"
+                            TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    x:Name="BranchButton"
+                    Grid.Column="2"
+                    AutomationProperties.Name="Branch"
+                    Click="BranchButton_Click"
+                    Style="{StaticResource ClineChipButtonStyle}"
+                    ToolTipService.ToolTip="Cambia o crea un branch"
+                    Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <!--  Icona "git branch" (lucide)  -->
+                        <Viewbox Width="14" Height="14">
+                            <Path
+                                Data="M6,3 L6,15 M18,9 A9,9 0 0 1 9,18 M21,6 A3,3 0 1 1 15,6 A3,3 0 1 1 21,6 M9,18 A3,3 0 1 1 3,18 A3,3 0 1 1 9,18"
+                                Stroke="{StaticResource ClineText1Brush}"
+                                StrokeEndLineCap="Round"
+                                StrokeStartLineCap="Round"
+                                StrokeThickness="2" />
+                        </Viewbox>
+                        <TextBlock
+                            x:Name="BranchText"
+                            MaxWidth="180"
+                            TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Button>
+
+                <StackPanel
+                    x:Name="WorktreePanel"
+                    Grid.Column="3"
+                    Margin="4,0,0,0"
+                    Orientation="Horizontal"
+                    Spacing="6"
+                    Visibility="Collapsed">
+                    <ToggleSwitch
+                        x:Name="WorktreeSwitch"
+                        MinWidth="0"
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        FontWeight="SemiBold"
+                        OffContent="Worktree"
+                        OnContent="Worktree" />
+                    <FontIcon
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        Foreground="{StaticResource ClineTextMutedBrush}"
+                        Glyph="&#xE946;"
+                        ToolTipService.ToolTip="Esegue la sessione in un worktree git separato, senza toccare la cartella di lavoro." />
+                </StackPanel>
+
+                <Button
+                    Grid.Column="6"
+                    Style="{StaticResource ClineChipButtonStyle}"
+                    ToolTipService.ToolTip="Apri il terminale">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE756;" />
+                        <TextBlock Text="Terminale" />
+                    </StackPanel>
+                </Button>
+
+                <!--  Apre il pannello git; mostra quanti file sono cambiati  -->
+                <Button
+                    x:Name="ChangesButton"
+                    Grid.Column="5"
+                    AutomationProperties.Name="Modifiche"
+                    Click="ChangesButton_Click"
+                    Style="{StaticResource ClineChipButtonStyle}"
+                    ToolTipService.ToolTip="Modifiche del progetto (git)"
+                    Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="14" Glyph="&#xE81C;" />
+                        <TextBlock x:Name="ChangesButtonText" Text="Modifiche" />
+                    </StackPanel>
+                </Button>
+
+            </Grid>
+
+            <!--  Messaggi in coda: partono quando l'agente ha finito  -->
+            <StackPanel
+                x:Name="QueuePanel"
+                Margin="0,0,0,8"
+                Spacing="6"
+                Visibility="Collapsed" />
+
+            <!--  Suggerimenti di "@" (file del progetto) e "/" (comandi)  -->
+            <Border
+                x:Name="SuggestionPanel"
+                Margin="0,0,0,8"
+                Padding="4"
+                Background="{StaticResource ClineCardBrush}"
+                BorderBrush="{StaticResource ClineBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Visibility="Collapsed">
+                <StackPanel Spacing="2">
+                    <TextBlock
+                        x:Name="SuggestionHeader"
+                        Margin="8,4,8,2"
+                        FontSize="11"
+                        Foreground="{StaticResource ClineTextMutedBrush}" />
+                    <ListView
+                        x:Name="SuggestionList"
+                        MaxHeight="260"
+                        IsItemClickEnabled="True"
+                        ItemClick="SuggestionList_ItemClick"
+                        SelectionMode="Single">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:ComposerSuggestion">
+                                <Grid Padding="0,3" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon
+                                        FontSize="13"
+                                        Foreground="{StaticResource ClineText2Brush}"
+                                        Glyph="{x:Bind Glyph}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        FontSize="13"
+                                        Text="{x:Bind Label}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        FontSize="12"
+                                        Foreground="{StaticResource ClineTextMutedBrush}"
+                                        Text="{x:Bind Detail}"
+                                        TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+
+            <!--  Composer  -->
+            <Border
+                Background="{StaticResource ClineBackgroundBrush}"
+                BorderBrush="{StaticResource ClineBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ClineRadiusXl}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Allegati del messaggio (file e immagini), con il pulsante per toglierli  -->
+                    <ScrollViewer
+                        x:Name="AttachmentsScroll"
+                        Padding="12,10,12,0"
+                        HorizontalScrollBarVisibility="Auto"
+                        HorizontalScrollMode="Auto"
+                        VerticalScrollBarVisibility="Disabled"
+                        VerticalScrollMode="Disabled"
+                        Visibility="Collapsed">
+                        <StackPanel
+                            x:Name="AttachmentsBar"
+                            Orientation="Horizontal"
+                            Spacing="8" />
+                    </ScrollViewer>
+
+                    <Grid Grid.Row="1" Padding="4,4,12,8">
+                        <TextBox
+                            x:Name="PromptBox"
+                            MinHeight="56"
+                            MaxHeight="240"
+                            Padding="10,8,40,8"
+                            AcceptsReturn="True"
+                            AllowDrop="True"
+                            AutomationProperties.Name="Messaggio"
+                            BorderThickness="0"
+                            DragOver="PromptBox_DragOver"
+                            Drop="PromptBox_Drop"
+                            FontSize="14"
+                            Paste="PromptBox_Paste"
+                            PlaceholderText="Chiedi una modifica, @menziona file, cita #PR o esegui /comandi."
+                            PreviewKeyDown="PromptBox_PreviewKeyDown"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            SelectionChanged="PromptBox_SelectionChanged"
+                            TextChanged="PromptBox_TextChanged"
+                            TextWrapping="Wrap" />
+                        <Button
+                            x:Name="SendButton"
+                            Width="24"
+                            Height="24"
+                            Padding="0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            AutomationProperties.Name="Invia"
+                            Click="Send_Click"
+                            CornerRadius="{StaticResource ClineRadiusMd}"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}"
+                            ToolTipService.ToolTip="Invia (Invio)">
+                            <FontIcon
+                                x:Name="SendIcon"
+                                FontSize="11"
+                                Glyph="&#xE74A;" />
+                        </Button>
+                    </Grid>
+
+                    <Border
+                        Grid.Row="2"
+                        Padding="8,6"
+                        BorderBrush="{StaticResource ClineBorderBrush}"
+                        BorderThickness="0,1,0,0">
+                        <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Stima dei token della conversazione  -->
+                        <TextBlock
+                            x:Name="TokenText"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="{StaticResource ClineTextMutedBrush}"
+                            Visibility="Collapsed" />
+                        <StackPanel Orientation="Horizontal" Spacing="2">
+                            <Button
+                                Width="28"
+                                Height="28"
+                                AutomationProperties.Name="Allega file o immagini"
+                                Click="Attach_Click"
+                                Style="{StaticResource ClineIconButtonStyle}"
+                                ToolTipService.ToolTip="Allega file o immagini (puoi anche incollare o trascinare)">
+                                <FontIcon FontSize="13" Glyph="&#xE723;" />
+                            </Button>
+
+                            <DropDownButton
+                                x:Name="ProviderButton"
+                                Content="OpenRouter"
+                                Style="{StaticResource ClineGhostDropDownStyle}"
+                                ToolTipService.ToolTip="Provider">
+                                <DropDownButton.Flyout>
+                                    <!--  Voci create dal codice dal catalogo dei provider  -->
+                                    <MenuFlyout
+                                        x:Name="ProviderMenu"
+                                        Opening="ProviderMenu_Opening"
+                                        Placement="TopEdgeAlignedLeft" />
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+
+                            <DropDownButton
+                                x:Name="ModelButton"
+                                MaxWidth="280"
+                                AutomationProperties.Name="Modello"
+                                Content="Auto"
+                                Style="{StaticResource ClineGhostDropDownStyle}"
+                                ToolTipService.ToolTip="Modello">
+                                <DropDownButton.Flyout>
+                                    <Flyout
+                                        x:Name="ModelFlyout"
+                                        Opening="ModelFlyout_Opening"
+                                        Placement="TopEdgeAlignedLeft">
+                                        <StackPanel Width="360" Spacing="8">
+                                            <TextBox
+                                                x:Name="ModelSearchBox"
+                                                AutomationProperties.Name="Cerca modello"
+                                                PlaceholderText="Cerca modello"
+                                                TextChanged="ModelSearch_TextChanged" />
+                                            <TextBlock
+                                                x:Name="ModelStatusText"
+                                                Style="{StaticResource ClineCaptionTextStyle}"
+                                                TextWrapping="Wrap"
+                                                Visibility="Collapsed" />
+                                            <ListView
+                                                x:Name="ModelList"
+                                                MaxHeight="360"
+                                                IsItemClickEnabled="True"
+                                                ItemClick="ModelList_ItemClick"
+                                                SelectionMode="Single">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate x:DataType="local:ModelInfo">
+                                                        <StackPanel Padding="0,4">
+                                                            <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
+                                                            <TextBlock
+                                                                FontFamily="Cascadia Mono, Consolas"
+                                                                FontSize="11"
+                                                                Foreground="{StaticResource ClineText2Brush}"
+                                                                Text="{x:Bind Id}"
+                                                                TextTrimming="CharacterEllipsis" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </StackPanel>
+                                    </Flyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+
+                            <DropDownButton
+                                Style="{StaticResource ClineGhostDropDownStyle}"
+                                FontWeight="Normal"
+                                Foreground="{StaticResource ClineText2Brush}"
+                                ToolTipService.ToolTip="Livello di ragionamento">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon FontSize="12" Glyph="&#xE945;" />
+                                    <TextBlock x:Name="ReasoningText" Text="Basso" />
+                                </StackPanel>
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="TopEdgeAlignedLeft">
+                                        <MenuFlyoutItem Click="Reasoning_Click" Text="Basso" />
+                                        <MenuFlyoutItem Click="Reasoning_Click" Text="Medio" />
+                                        <MenuFlyoutItem Click="Reasoning_Click" Text="Alto" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+
+                            <!--  Approvazione automatica per tipo di azione  -->
+                            <DropDownButton
+                                x:Name="AutoApproveButton"
+                                AutomationProperties.Name="Approvazione automatica"
+                                FontWeight="Normal"
+                                Foreground="{StaticResource ClineText2Brush}"
+                                Style="{StaticResource ClineGhostDropDownStyle}"
+                                ToolTipService.ToolTip="Approvazione automatica">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon FontSize="12" Glyph="&#xE73E;" />
+                                    <TextBlock x:Name="AutoApproveText" />
+                                </StackPanel>
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Opening="AutoApproveFlyout_Opening" Placement="TopEdgeAlignedLeft">
+                                        <MenuFlyoutItem IsEnabled="False" Text="Esegui senza chiedere:" />
+                                        <ToggleMenuFlyoutItem
+                                            x:Name="AutoReadItem"
+                                            Click="AutoApproveItem_Click"
+                                            Tag="Read"
+                                            Text="Leggere e cercare file">
+                                            <ToggleMenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE8A5;" />
+                                            </ToggleMenuFlyoutItem.Icon>
+                                        </ToggleMenuFlyoutItem>
+                                        <ToggleMenuFlyoutItem
+                                            x:Name="AutoEditItem"
+                                            Click="AutoApproveItem_Click"
+                                            Tag="Edit"
+                                            Text="Creare e modificare file">
+                                            <ToggleMenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE70F;" />
+                                            </ToggleMenuFlyoutItem.Icon>
+                                        </ToggleMenuFlyoutItem>
+                                        <ToggleMenuFlyoutItem
+                                            x:Name="AutoCommandItem"
+                                            Click="AutoApproveItem_Click"
+                                            Tag="Command"
+                                            Text="Eseguire comandi">
+                                            <ToggleMenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE756;" />
+                                            </ToggleMenuFlyoutItem.Icon>
+                                        </ToggleMenuFlyoutItem>
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem IsEnabled="False" Text="I comandi approvati in automatico possono cambiare file e sistema." />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </StackPanel>
+
+                        <!--  Modalità: Piano (solo lettura, propone un piano) o Agisci (modifica e esegue)  -->
+                        <Border
+                            Grid.Column="2"
+                            Padding="2"
+                            VerticalAlignment="Center"
+                            BorderBrush="{StaticResource ClineBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="2">
+                                <ToggleButton
+                                    x:Name="PlanModeButton"
+                                    Padding="10,2"
+                                    AutomationProperties.Name="Modalità Piano"
+                                    BorderThickness="0"
+                                    Click="Mode_Click"
+                                    Content="Piano"
+                                    CornerRadius="6"
+                                    FontSize="12"
+                                    Tag="plan"
+                                    ToolTipService.ToolTip="Piano: Cline esplora il progetto e propone un piano, senza modificare file né eseguire comandi." />
+                                <ToggleButton
+                                    x:Name="ActModeButton"
+                                    Padding="10,2"
+                                    AutomationProperties.Name="Modalità Agisci"
+                                    BorderThickness="0"
+                                    Click="Mode_Click"
+                                    Content="Agisci"
+                                    CornerRadius="6"
+                                    FontSize="12"
+                                    Tag="act"
+                                    ToolTipService.ToolTip="Agisci: Cline modifica file ed esegue comandi (con le approvazioni impostate)." />
+                            </StackPanel>
+                        </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>

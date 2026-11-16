@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClineWin.RemotePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClineWin"
+    Background="{StaticResource ClineBackgroundBrush}">
+
+    <Page.Resources>
+        <Style x:Key="FieldBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderBrush" Value="{StaticResource ClineInputBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style x:Key="StatusLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{StaticResource ClineText2Brush}" />
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="1105" Style="{StaticResource SettingsPageStackStyle}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource ClinePageTitleStyle}" Text="Ambienti remoti" />
+                    <TextBlock
+                        Margin="0,12,0,0"
+                        Style="{StaticResource ClinePageDescriptionStyle}"
+                        Text="Gestisci gli host SSH remoti e le loro configurazioni." />
+                </StackPanel>
+                <Button
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    IsEnabled="False"
+                    Style="{StaticResource ClineIconButtonStyle}"
+                    ToolTipService.ToolTip="Aggiorna ambienti remoti">
+                    <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                </Button>
+            </Grid>
+
+            <Grid Margin="0,28,0,0" ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Elenco host  -->
+                <Border VerticalAlignment="Top" Style="{StaticResource ClineCardStyle}">
+                    <StackPanel>
+                        <Grid Padding="16,12" ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Host SSH" />
+                            <Border
+                                Grid.Column="1"
+                                Padding="7,1"
+                                VerticalAlignment="Center"
+                                Background="{StaticResource ClineSurface3Brush}"
+                                CornerRadius="8">
+                                <TextBlock
+                                    x:Name="HostCount"
+                                    FontSize="11"
+                                    Text="0" />
+                            </Border>
+                            <Button
+                                Grid.Column="2"
+                                Padding="8,3"
+                                HorizontalAlignment="Right"
+                                Click="NewHost_Click"
+                                FontSize="12"
+                                Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon FontSize="11" Glyph="&#xE710;" />
+                                    <TextBlock Text="Nuovo host" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <Border BorderBrush="{StaticResource ClineBorderBrush}" BorderThickness="0,1,0,0">
+                            <Grid>
+                                <ListView
+                                    x:Name="HostList"
+                                    Padding="6"
+                                    SelectionChanged="HostList_SelectionChanged"
+                                    SelectionMode="Single">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="local:SshHost">
+                                            <StackPanel Padding="0,8" Spacing="2">
+                                                <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
+                                                <TextBlock
+                                                    FontFamily="Cascadia Mono, Consolas"
+                                                    FontSize="12"
+                                                    Foreground="{StaticResource ClineText2Brush}"
+                                                    Text="{x:Bind Destination}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <TextBlock
+                                    x:Name="EmptyHostsText"
+                                    Margin="16"
+                                    Style="{StaticResource ClineCaptionTextStyle}"
+                                    Text="Nessun host SSH. Aggiungi l'indirizzo del tuo primo ambiente remoto."
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!--  Modulo host  -->
+                <Border
+                    Grid.Column="1"
+                    Padding="20"
+                    Style="{StaticResource ClineCardStyle}">
+                    <StackPanel Spacing="16">
+                        <Grid>
+                            <TextBlock
+                                x:Name="FormTitle"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Text="Nuovo host" />
+                            <Button
+                                x:Name="DeleteButton"
+                                HorizontalAlignment="Right"
+                                Click="Delete_Click"
+                                Style="{StaticResource ClineIconButtonStyle}"
+                                ToolTipService.ToolTip="Elimina host"
+                                Visibility="Collapsed">
+                                <FontIcon FontSize="13" Glyph="&#xE74D;" />
+                            </Button>
+                        </Grid>
+                        <TextBlock
+                            x:Name="LockedNote"
+                            Style="{StaticResource ClineCaptionTextStyle}"
+                            Text="Crea un nuovo host per cambiare host SSH, utente o porta."
+                            Visibility="Collapsed" />
+
+                        <Grid ColumnSpacing="12" RowSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBox
+                                x:Name="NameBox"
+                                Header="Nome"
+                                PlaceholderText="Server di build"
+                                Style="{StaticResource FieldBoxStyle}"
+                                TextChanged="Field_TextChanged" />
+                            <TextBox
+                                x:Name="HostBox"
+                                Grid.Column="1"
+                                Header="Host SSH"
+                                PlaceholderText="dev.example.com o alias di ssh-config"
+                                Style="{StaticResource FieldBoxStyle}"
+                                TextChanged="Field_TextChanged" />
+                            <TextBox
+                                x:Name="UserBox"
+                                Grid.Row="1"
+                                Header="Utente (facoltativo)"
+                                PlaceholderText="ubuntu"
+                                Style="{StaticResource FieldBoxStyle}"
+                                TextChanged="Field_TextChanged" />
+                            <TextBox
+                                x:Name="PortBox"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Header="Porta"
+                                InputScope="Number"
+                                PlaceholderText="22 (dalla configurazione SSH)"
+                                Style="{StaticResource FieldBoxStyle}"
+                                TextChanged="Field_TextChanged" />
+                        </Grid>
+
+                        <StackPanel Spacing="6">
+                            <TextBox
+                                x:Name="IdentityBox"
+                                Header="File di identità (facoltativo)"
+                                PlaceholderText="~/.ssh/id_ed25519"
+                                Style="{StaticResource FieldBoxStyle}"
+                                TextChanged="Field_TextChanged" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{StaticResource ClineTextMutedBrush}"
+                                Text="L'accesso con password non è supportato. La chiave dell'host deve essere già attendibile nel file known_hosts di SSH."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <TextBlock
+                            x:Name="ValidationText"
+                            FontSize="13"
+                            Foreground="{StaticResource ClineErrorTextBrush}"
+                            Visibility="Collapsed" />
+
+                        <!--  Stato dell'ambiente  -->
+                        <Border
+                            Padding="16"
+                            Background="{StaticResource ClineCardBrush}"
+                            CornerRadius="8">
+                            <Grid ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="10">
+                                    <TextBlock
+                                        FontSize="13"
+                                        FontWeight="SemiBold"
+                                        Text="Stato dell'ambiente" />
+                                    <Grid ColumnSpacing="24" RowSpacing="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Style="{StaticResource StatusLabelStyle}" Text="Ambiente" />
+                                        <TextBlock Grid.Column="1" FontSize="12" Text="Inattivo" />
+                                        <TextBlock Grid.Row="1" Style="{StaticResource StatusLabelStyle}" Text="Connessione" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="12" Text="Disconnesso" />
+                                        <TextBlock Grid.Row="2" Style="{StaticResource StatusLabelStyle}" Text="Test di connessione" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1" FontSize="12" Text="Non eseguito" />
+                                        <TextBlock Grid.Row="3" Style="{StaticResource StatusLabelStyle}" Text="Installazione Cline" />
+                                        <TextBlock Grid.Row="3" Grid.Column="1" FontSize="12" Text="Sconosciuta" />
+                                    </Grid>
+                                </StackPanel>
+                                <Button
+                                    Grid.Column="1"
+                                    VerticalAlignment="Top"
+                                    IsEnabled="False"
+                                    ToolTipService.ToolTip="Il test arriverà con il collegamento al backend">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <FontIcon FontSize="12" Glyph="&#xE703;" />
+                                        <TextBlock Text="Prova connessione" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <Button
+                            x:Name="SaveButton"
+                            HorizontalAlignment="Right"
+                            Click="Save_Click"
+                            Content="Aggiungi"
+                            IsEnabled="False"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

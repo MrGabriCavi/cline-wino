@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ClineWin (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ClineWin (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
